@@ -4,6 +4,7 @@ import logo from '../../Assets/logo.svg'
 import HomepageCSS from './HomepageCSS.module.css'
 
 const Homepage = () => {
+    const name = localStorage.getItem('username')
     return (
         <div className={`container ${HomepageCSS.container}`}>
             <div className={`card ${HomepageCSS.card}`}>
@@ -11,7 +12,8 @@ const Homepage = () => {
                     <img src={logo} alt="logo" className={HomepageCSS.img} />
                 </div>
                 <h1 className={HomepageCSS.h1}>Brain Wave</h1>
-                <Link to='Name'>
+                
+                <Link to={`${name ? '/main' : '/name'}`}>
                     <button className={`btn btn-primary ${HomepageCSS.btn}`}>Get Started</button>
                 </Link>
             </div>
