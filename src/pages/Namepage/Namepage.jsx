@@ -17,7 +17,7 @@ const Namepage = () => {
         <div className={`container ${NamepageCSS.container}`}>
             <div className={`card ${NamepageCSS.card}`}>
                 <h1 className={NamepageCSS.h1}>What's Your Name?</h1>
-                <input type="text" onChange={inputChange} value={name} className={`form-control mt-2 mb-3 ${NamepageCSS.input}`} placeholder="Enter your name" spellCheck="false" />
+                <input type="text" onChange={inputChange} value={name} className={`form-control mt-2 mb-3 ${NamepageCSS.input}`} placeholder="Enter your name" spellCheck="false" required />
                 <Link to='/main'>
                     <button onClick={onClickHandler} className={`btn btn-primary ${NamepageCSS.btn}`}>Remember Me</button>
                 </Link>

@@ -9,7 +9,7 @@ const Homepage = () => {
         <div className={`container ${HomepageCSS.container}`}>
             <div className={`card ${HomepageCSS.card}`}>
                 <div className={HomepageCSS.imgdiv}>
-                    <img src={logo} alt="logo" className={HomepageCSS.img} />
+                    <img src={logo} alt="logo" className={HomepageCSS.img} draggable="false" />
                 </div>
                 <h1 className={HomepageCSS.h1}>Brain Wave</h1>
                 
