@@ -6,20 +6,27 @@ import firebase from '../../utils/firebase'
 const Mainpage = () => {
     // State for Counter
     const [counter, setCounter] = useState('')
+    const [qn, setQn] = useState('')
     const [data, setData] = useState([])
     const [images, setImages] = useState([])
+    // const [images, setImages] = useState([])
     const [isLoaded,setIsLoaded] = useState(false);
     const initial = useRef(true);
 
 
-    function get(id) {
-        const ref = firebase.database().ref('data').child(id);
-        ref.once('value', (snapshot) => {
-            return(snapshot.val());
+    useEffect(() => {
+        const ref = firebase.database().ref('data').child(555);
+        ref.on('value', (snapshot) => {
+          const all = snapshot.val();
+          const array = [];
+          setData(all);
+          setImages(all.images)
         });
-    }
+      }, []);
 
-    const imgurl = "https://thumb.fakeface.rest/thumb/_"
+      console.log(data);
+
+    const imgurl = "https://thumb.fakeface.rest/thumb_"
 
     function getCounter() {
         var d = new Date();
@@ -31,35 +38,6 @@ const Mainpage = () => {
         var remainder = (secondsUntilEndOfDate % 30)
         return [questionNo, remainder]
     }
-
-    useEffect(() => {
-        let [questionNo, remainder] = getCounter();
-        setInterval(() => {
-            let [questionNo, remainder] = getCounter();
-
-            setCounter(remainder);
-
-        }, 1000)
-        if(initial.current){
-            console.log(questionNo);
-            get(questionNo);
-            console.log(get(questionNo));
-            initial.current = false;
-            setIsLoaded(true)
-        }
-        if(counter === 0){
-            console.log(questionNo-1);
-            if(questionNo !== 0){
-                get(questionNo - 1)
-                setIsLoaded(true)
-            }
-            else{
-                get(questionNo)
-                setIsLoaded(true)
-            }
-            console.log(isLoaded);
-        }
-    }, [counter])
 
 
 
@@ -78,7 +56,7 @@ const Mainpage = () => {
                     </div>
                     <div className="col-6">
                         <div className={MainpageCSS.imgdiv}>
-                            <img src={imgurl + images[1]} alt="logo" className={MainpageCSS.img} draggable="false" />
+                            {/* <img src={imgurl + images[1]} alt="logo" className={MainpageCSS.img} draggable="false" /> */}
                         </div>
                     </div>
                 </div>
@@ -90,12 +68,12 @@ const Mainpage = () => {
                 <div className="row mt-4">
                     <div className="col-6">
                         <div className={MainpageCSS.imgdiv}>
-                            <img src={imgurl + images[2]} alt="logo" className={MainpageCSS.img} draggable="false" />
+                            {/* <img src={imgurl + images[2]} alt="logo" className={MainpageCSS.img} draggable="false" /> */}
                         </div>
                     </div>
                     <div className="col-6">
                         <div className={MainpageCSS.imgdiv}>
-                            <img src={imgurl + images[3]} alt="logo" className={MainpageCSS.img} draggable="false" />
+                            {/* <img src={imgurl + images[3]} alt="logo" className={MainpageCSS.img} draggable="false" /> */}
                         </div>
                     </div>
                 </div>
