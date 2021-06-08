@@ -14,7 +14,8 @@ const Mainpage = () => {
     // const initial = useRef(true);
 
     // loading img
-    const loading_img = "https://cutewallpaper.org/21/loading-gif-transparent-background/Tag-For-Transparent-Spinner-Icon-Pehliseedhi-Suitable-.gif"
+    var loading_img = "https://cutewallpaper.org/21/loading-gif-transparent-background/Tag-For-Transparent-Spinner-Icon-Pehliseedhi-Suitable-.gif"
+    loading_img = "https://abucoins.com/img/trade/pre-loading.gif"
 
     function getCounter() {
         var d = new Date();
@@ -29,13 +30,24 @@ const Mainpage = () => {
 
     function getData(){
         var [qNo, rem] = getCounter()
-        const ref = firebase.database().ref('data').child(qNo);
+        const ref = firebase.database().ref('data').child(1);
         ref.on('value', (snapshot) => {
           const all = snapshot.val();
         //   const array = [];
           setData(all);
+          console.log(all)
           setImages(all.images)
         });
+    }
+
+    function updateData(){
+        var [qNo,rem] = getCounter()
+        const ref = firebase.database().ref('data').child(1);
+        ref.update({
+            ...data,
+            "votes":[0,0,0,0]
+        })
+
     }
 
     useEffect(() => {
@@ -50,10 +62,7 @@ const Mainpage = () => {
             if (rem ===29){
                 getData()
             }
-
           }, 1000)
-        
-  
         return function cleanup() {
           console.log("cleaning up");
           clearInterval(interval);
