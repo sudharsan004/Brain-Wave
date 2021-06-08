@@ -6,27 +6,15 @@ import firebase from '../../utils/firebase'
 const Mainpage = () => {
     // State for Counter
     const [counter, setCounter] = useState('')
-    const [qn, setQn] = useState('')
+    // const [qn, setQn] = useState('')
     const [data, setData] = useState([])
     const [images, setImages] = useState([])
     // const [images, setImages] = useState([])
-    const [isLoaded,setIsLoaded] = useState(false);
-    const initial = useRef(true);
+    // const [isLoaded,setIsLoaded] = useState(false);
+    // const initial = useRef(true);
 
-
-    useEffect(() => {
-        const ref = firebase.database().ref('data').child(555);
-        ref.on('value', (snapshot) => {
-          const all = snapshot.val();
-          const array = [];
-          setData(all);
-          setImages(all.images)
-        });
-      }, []);
-
-      console.log(data);
-
-    const imgurl = "https://thumb.fakeface.rest/thumb_"
+    // loading img
+    const loading_img = "https://cutewallpaper.org/21/loading-gif-transparent-background/Tag-For-Transparent-Spinner-Icon-Pehliseedhi-Suitable-.gif"
 
     function getCounter() {
         var d = new Date();
@@ -38,6 +26,44 @@ const Mainpage = () => {
         var remainder = (secondsUntilEndOfDate % 30)
         return [questionNo, remainder]
     }
+
+    function getData(){
+        var [qNo, rem] = getCounter()
+        const ref = firebase.database().ref('data').child(qNo);
+        ref.on('value', (snapshot) => {
+          const all = snapshot.val();
+        //   const array = [];
+          setData(all);
+          setImages(all.images)
+        });
+    }
+
+    useEffect(() => {
+        getData()
+      }, []);
+
+
+    useEffect(() => {
+         let interval= setInterval(() => {
+            let[qNo,rem]=getCounter()
+            setCounter(rem)
+            if (rem ===29){
+                getData()
+            }
+
+          }, 1000)
+        
+  
+        return function cleanup() {
+          console.log("cleaning up");
+          clearInterval(interval);
+        };
+      }, [])
+    //   console.log(data);
+
+    const imgurl = "https://thumb.fakeface.rest/thumb_"
+
+  
 
 
 
@@ -51,29 +77,29 @@ const Mainpage = () => {
                 <div className="row">
                     <div className="col-6">
                         <div className={MainpageCSS.imgdiv}>
-                            <img src={imgurl + images[0]} alt="logo" className={MainpageCSS.img} draggable="false" />
+                            <img src={imgurl + images[0]} alt="" className={MainpageCSS.img} draggable="false" onError={(e)=>e.target.src=loading_img} />
                         </div>
                     </div>
                     <div className="col-6">
                         <div className={MainpageCSS.imgdiv}>
-                            {/* <img src={imgurl + images[1]} alt="logo" className={MainpageCSS.img} draggable="false" /> */}
-                        </div>
-                    </div>
-                </div>
-
-                <span className={MainpageCSS.span}>
-                    <p className={MainpageCSS.counter}>{('0' + counter).slice(-2)}</p>
-                </span>
-
-                <div className="row mt-4">
-                    <div className="col-6">
-                        <div className={MainpageCSS.imgdiv}>
-                            {/* <img src={imgurl + images[2]} alt="logo" className={MainpageCSS.img} draggable="false" /> */}
-                        </div>
-                    </div>
-                    <div className="col-6">
-                        <div className={MainpageCSS.imgdiv}>
-                            {/* <img src={imgurl + images[3]} alt="logo" className={MainpageCSS.img} draggable="false" /> */}
+                            <img src={imgurl + images[1]} alt="" className={MainpageCSS.img} draggable="false" onError={(e)=>e.target.src=loading_img}  />
+                        </div> 
+                    </div> 
+                </div> 
+ 
+                <span className={MainpageCSS.span}> 
+                    <p className={MainpageCSS.counter}>{('0' + counter).slice(-2)}</p> 
+                </span> 
+ 
+                <div className="row mt-4"> 
+                    <div className="col-6"> 
+                        <div className={MainpageCSS.imgdiv}> 
+                            <img src={imgurl + images[2]} alt="" className={MainpageCSS.img} draggable="false" onError={(e)=>e.target.src=loading_img}  />
+                        </div> 
+                    </div> 
+                    <div className="col-6"> 
+                        <div className={MainpageCSS.imgdiv}> 
+                            <img src={imgurl + images[3]} alt="" className={MainpageCSS.img} draggable="false" onError={(e)=>e.target.src=loading_img}  />
                         </div>
                     </div>
                 </div>
