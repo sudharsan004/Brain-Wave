@@ -8,6 +8,7 @@ import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
 const Mainpage = () => {
     // State for Counter
     const [counter, setCounter] = useState('')
+    const [selectedImgColor,setSelectedImgColor] = useState(["#eeeeee","#eeeeee","#eeeeee","#eeeeee"])
     // const [qn, setQn] = useState('')
     const [data, setData] = useState([])
     const [images, setImages] = useState([])
@@ -33,7 +34,7 @@ const Mainpage = () => {
     }
 
     function getData() {
-        var [qNo, rem] = getCounter()
+        var [qNo,] = getCounter()
         const ref = firebase.database().ref('data').child(qNo);
         ref.on('value', (snapshot) => {
             const all = snapshot.val();
@@ -41,6 +42,7 @@ const Mainpage = () => {
             setData(all);
             console.log(all)
             setImages(all.images)
+            setVotes(all.votes)
         });
     }
 
@@ -67,6 +69,15 @@ const Mainpage = () => {
                 getData()
                 setVotes([0,0,0,0])
                 setSelected(false)
+                // updateData()
+            }
+            if (rem ===5){
+                setSelectedImgColor(["#eeeeee","#eeeeee","#eeeeee","#eeeeee"])
+                getData()
+                // setVotes(p => { p[img_no] += 1; return p })
+                // var r=Math.random()
+                setVotes([Math.random()*50,Math.random()*20,Math.random()*40,Math.random()*80])
+                document.getElementById('p').innerText=`BRAIN WAVE`
             }
         }, 1000)
         return function cleanup() {
@@ -79,13 +90,17 @@ const Mainpage = () => {
     const imgurl = "https://thumb.fakeface.rest/thumb_"
 
     function handleClick(e) {
+    
         if (!selected) {
             var target = e.target
             var img_no = target.alt
-            // setVotes(p => { p[img_no] += 1; return p })
-            var r=Math.random()
-            setVotes([Math.random()*50,Math.random()*20,Math.random()*40,Math.random()*80])
+            var parent=target.parentElement;
+            console.log(parent)
+            setSelectedImgColor(p=>{p[img_no]="#8c7b7b"; return p})
             setSelected(true)
+            var uname= localStorage.getItem('username')
+            document.getElementById('p').innerText=`${uname}!, Results will be
+             shown in the last 5 sec`
         }
 
     }
@@ -109,7 +124,7 @@ const Mainpage = () => {
                                     },
                                     trail: {
                                         // Trail color
-                                        stroke: '#eeeeee',
+                                        stroke: selectedImgColor[0],
                                     }
                                 }}>
                                 <img src={imgurl + images[0]} alt="0" onClick={handleClick} className={MainpageCSS.img} draggable="false" onError={(e) => e.target.src = loading_img} />
@@ -125,7 +140,7 @@ const Mainpage = () => {
                                     },
                                     trail: {
                                         // Trail color
-                                        stroke: '#eeeeee',
+                                        stroke: selectedImgColor[1],
                                     }
                                 }}>
                                 <img src={imgurl + images[1]} alt="1" onClick={handleClick} className={MainpageCSS.img} draggable="false" onError={(e) => e.target.src = loading_img} />
@@ -148,7 +163,7 @@ const Mainpage = () => {
                                     },
                                     trail: {
                                         // Trail color
-                                        stroke: '#eeeeee',
+                                        stroke: selectedImgColor[2],
                                     }
                                 }}>
                                 <img src={imgurl + images[2]} alt="2" onClick={handleClick} className={MainpageCSS.img} draggable="false" onError={(e) => e.target.src = loading_img} />
@@ -164,7 +179,7 @@ const Mainpage = () => {
                                     },
                                     trail: {
                                         // Trail color
-                                        stroke: '#eeeeee',
+                                        stroke: selectedImgColor[3],
                                     }
                                 }}>
                                 <img src={imgurl + images[3]} alt="3" onClick={handleClick} className={MainpageCSS.img} draggable="false" onError={(e) => e.target.src = loading_img} />
@@ -172,7 +187,7 @@ const Mainpage = () => {
                         </div>
                     </div>
                 </div>
-                <p className={MainpageCSS.p}>Brain Wave</p>
+                <p id="p" className={MainpageCSS.p}>Brain Wave</p>
 
 
             </div>
